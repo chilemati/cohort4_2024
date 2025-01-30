@@ -6,6 +6,9 @@ import useToastify from '../customHooks/useToastify';
 import { Link, useNavigate } from 'react-router-dom';
 import {Blogs} from '../../../data/db.json'
 import { IoArrowBack } from 'react-icons/io5';
+import { useRecoilValue } from 'recoil';
+import { UserAtom } from '../atoms/user';
+const baseUrl = import.meta.env.VITE_API_PROD
 
 const SignupSchema = Yup.object().shape({
   body: Yup.string()
@@ -22,6 +25,7 @@ const SignupSchema = Yup.object().shape({
  const Update = ({toggle,setToggle,Data}) => {
   const {toastContainer,success,dismissAll,info} = useToastify()
   const redir = useNavigate();
+  const User = useRecoilValue(UserAtom);
   return (
   <div className='flexCol gap-1' >
    <p className="flexStart w-full mt-4 ">
@@ -39,9 +43,9 @@ const SignupSchema = Yup.object().shape({
       onSubmit={(values) => {
         // same shape as initial values
         info('Please Wait...')
-        let upd = {...values };
+        let upd = {...values,id:Data._id, };
 
-        axios.patch('http://localhost:9000/Blogs/'+Data.id,upd)
+        axios.patch(baseUrl+'/blogs',upd,{headers: {token: User.data.token}})
        .then(({data})=> {
          dismissAll();
          success('Sucessfull!');

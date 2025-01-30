@@ -5,6 +5,9 @@ import axios from 'axios';
 import useToastify from '../customHooks/useToastify';
 import { Link, useNavigate } from 'react-router-dom';
 import {Blogs} from '../../../data/db.json'
+import { useRecoilValue } from 'recoil';
+import { UserAtom } from '../atoms/user';
+const baseUrl = import.meta.env.VITE_API_PROD;
 
 const SignupSchema = Yup.object().shape({
   body: Yup.string()
@@ -21,6 +24,7 @@ const SignupSchema = Yup.object().shape({
  const Create = () => {
   const {toastContainer,success,dismissAll,info} = useToastify()
   const redir = useNavigate();
+  const User = useRecoilValue(UserAtom);
   return (
   <div className='flexCol gap-1' >
     <h1 className='text-red-700 font-bold text-3xl my-4' >New Blog</h1>
@@ -34,10 +38,9 @@ const SignupSchema = Yup.object().shape({
       onSubmit={(values) => {
         // same shape as initial values
         info('Please Wait...')
-        let id = Number(Blogs[Blogs.length -1].id)+1;
-        let upd = {...values,id: String(id) };
+        let upd = {...values };
 
-        axios.post('http://localhost:9000/Blogs',upd)
+        axios.post(baseUrl+'/blogs',upd,{headers: {token:User.data.token}})
        .then(({data})=> {
          dismissAll();
          success('Sucessfull!');

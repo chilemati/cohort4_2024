@@ -5,6 +5,7 @@ import useToastify from "../customHooks/useToastify";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { UserAtom } from "../atoms/user";
+const baseUrl = import.meta.env.VITE_API_PROD
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,12 +24,12 @@ const Login = () => {
     // formData.append('image',file)
     // // console.log({email,password,file});
     // console.log(JSON.stringify(formData))
-    axios.get('http://localhost:9000/Users/'+email)
+    axios.post(baseUrl+'/login',{email,password})
        .then(({data})=> {
-        if(data.password === password) {
+        if(data.status) {
           dismissAll();
           success('Sucessfull!');
-          setUser({isLoggedIn:true,data });
+          setUser({isLoggedIn:true,data:data.data });
           setTimeout(() => {
            redir('/blogs');
           }, 5000);
@@ -44,7 +45,6 @@ const Login = () => {
        .catch(err=> {
         console.log(err)
        })
-    console.log("Form Submited");
   }
   return (
     <div className="flexCol gap-3">

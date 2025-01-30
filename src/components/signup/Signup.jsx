@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import useToastify from '../customHooks/useToastify';
 import { Link, useNavigate } from 'react-router-dom';
+const baseUrl = import.meta.env.VITE_API_PROD
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -35,7 +36,7 @@ const SignupSchema = Yup.object().shape({
 });
 
  const Signup = () => {
-  const {toastContainer,success,dismissAll,info} = useToastify()
+  const {toastContainer,success,dismissAll,info,error} = useToastify()
   const redir = useNavigate();
   return (
   <div className='flexCol gap-1' >
@@ -51,19 +52,21 @@ const SignupSchema = Yup.object().shape({
       onSubmit={values => {
         // same shape as initial values
         info('Please Wait...')
-        let role = 'normal';
-        if(values.email === 'amadichile@gmail.com') {
-          role='Admin';
-        }
-        let upd = {...values,role,id:values.email}
+      
+        let upd = {...values}
 
-        axios.post('http://localhost:9000/Users',upd)
+        axios.post(baseUrl+'/signup',upd)
        .then(({data})=> {
-         dismissAll();
-         success('Sucessfull!');
-         setTimeout(() => {
-          redir('/login');
-         }, 5000);
+        if(data.status) {
+          dismissAll();
+          success('Sucessfull!');
+          setTimeout(() => {
+           redir('/login');
+          }, 5000);
+          
+        }else{
+          error('An Error Occured!')
+        }
        })
        .catch(err=> {
         console.log(err)
