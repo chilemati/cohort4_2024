@@ -40,7 +40,7 @@ const SignupSchema = Yup.object().shape({
         info('Please Wait...')
         let upd = {...values };
 
-        axios.post(baseUrl+'/blogs',upd,{headers: {token:User.data.token}})
+        axios.post(baseUrl+'/blogs',upd,{headers: {"Access-Control-Allow-Origin": "*","Content-Type": "application/json" ,token:User.data.token}})
        .then(({data})=> {
          dismissAll();
          success('Sucessfull!');

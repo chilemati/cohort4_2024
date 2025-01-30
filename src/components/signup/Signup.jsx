@@ -55,7 +55,7 @@ const SignupSchema = Yup.object().shape({
       
         let upd = {...values}
 
-        axios.post(baseUrl+'/signup',upd)
+        axios.post(baseUrl+'/signup',upd,{headers: {"Access-Control-Allow-Origin": "*","Content-Type": "application/json" }})
        .then(({data})=> {
         if(data.status) {
           dismissAll();

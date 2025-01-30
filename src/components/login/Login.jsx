@@ -24,7 +24,7 @@ const Login = () => {
     // formData.append('image',file)
     // // console.log({email,password,file});
     // console.log(JSON.stringify(formData))
-    axios.post(baseUrl+'/login',{email,password})
+    axios.post(baseUrl+'/login',{email,password},{headers: {"Access-Control-Allow-Origin": "*","Content-Type": "application/json" }})
        .then(({data})=> {
         if(data.status) {
           dismissAll();

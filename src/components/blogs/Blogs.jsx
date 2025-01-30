@@ -15,7 +15,7 @@ const Blogs = () => {
     useEffect(()=> {
 
        if(User.isLoggedIn) {
-        axios.get(baseUrl+'/blogs',{headers: {token: User.data.token}})
+        axios.get(baseUrl+'/blogs',{headers: {"Access-Control-Allow-Origin": "*" ,token: User.data.token}})
        .then(({data})=> {
         if(data.status) {
             setBlog(data.data);

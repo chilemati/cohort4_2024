@@ -23,7 +23,7 @@ const Details = () => {
 
   useEffect(() => {
     axios
-      .get(baseUrl + "/blogs/" + id, { headers: { token: User.data.token } })
+      .get(baseUrl + "/blogs/" + id, { headers: {"Access-Control-Allow-Origin": "*" , token: User.data.token } })
       .then(({ data }) => {
         if (data.status) {
           setBlog(data.data);
@@ -38,7 +38,7 @@ const Details = () => {
     info("Deleting...");
     axios
       .delete(baseUrl + "/blogs", {
-        headers: { token: User.data.token },
+        headers: {"Access-Control-Allow-Origin": "*","Content-Type": "application/json" , token: User.data.token },
         data: { id },
       })
       .then(({ data }) => {

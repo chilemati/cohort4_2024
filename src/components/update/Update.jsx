@@ -45,7 +45,7 @@ const SignupSchema = Yup.object().shape({
         info('Please Wait...')
         let upd = {...values,id:Data._id, };
 
-        axios.patch(baseUrl+'/blogs',upd,{headers: {token: User.data.token}})
+        axios.patch(baseUrl+'/blogs',upd,{headers: {"Access-Control-Allow-Origin": "*" ,"Content-Type": "application/json",token: User.data.token}})
        .then(({data})=> {
          dismissAll();
          success('Sucessfull!');
